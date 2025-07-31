@@ -34,7 +34,7 @@ const getParcels = catchAsync(
     const parcels = await parcelService.getParcels(req);
 
     sendResponse(res, {
-      status: 201,
+      status: 200,
       success: true,
       message: "parcels retrieved successfully",
       data: parcels,
@@ -47,10 +47,36 @@ const getMe = catchAsync(
     const parcels = await parcelService.getMe(req);
 
     sendResponse(res, {
-      status: 201,
+      status: 200,
       success: true,
       message: "parcels retrieved successfully",
       data: parcels,
+    });
+  }
+);
+
+const getParcelByTrackingNumber = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const parcel = await parcelService.getParcelByTrackingNumber(req);
+
+    sendResponse(res, {
+      status: 200,
+      success: true,
+      message: "parcel retrieved successfully",
+      data: parcel,
+    });
+  }
+);
+
+const cancelParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const parcel = await parcelService.cancelParcel(req);
+
+    sendResponse(res, {
+      status: 200,
+      success: true,
+      message: "parcel cancelled successfully",
+      data: parcel,
     });
   }
 );
@@ -60,4 +86,6 @@ export const parcelController = {
   updateParcel,
   getParcels,
   getMe,
+  getParcelByTrackingNumber,
+  cancelParcel,
 };

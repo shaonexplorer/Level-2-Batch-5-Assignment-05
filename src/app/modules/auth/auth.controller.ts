@@ -16,7 +16,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         throw new Error(error);
       }
 
-      const isAdmin = await Admin.find({ userId: user._id });
+      const isAdmin = await Admin.findOne({ userId: user._id });
 
       const token = jwt.sign(
         {

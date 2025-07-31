@@ -10,6 +10,7 @@ export const authenticate =
     const token = req.headers.authorization as string;
     const secret = process.env.JWT_SECRET as string;
     const user = jwt.verify(token, secret) as JwtPayload;
+
     try {
       if (!role.includes(user.role)) {
         throw new AppError(401, "You are not authorized");

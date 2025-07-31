@@ -6,6 +6,7 @@ import { AppError } from "../../utils/appError";
 import { Sender } from "../sender/sender.model";
 import { Reciever } from "../reciever/reciever.model";
 import { IParcelStatus } from "./parcel.interface";
+import { QueryBuilder } from "../../utils/queryBuilder";
 
 const createParcel = async (req: Request) => {
   const token = req.headers.authorization as string;
@@ -59,7 +60,16 @@ const updateParcel = async (req: Request) => {
 const getParcels = async (req: Request) => {
   const filter = req.query;
 
-  const parcels = Parcel.find(filter);
+  const query = new QueryBuilder(Parcel.find(), filter);
+
+  const parcels = await query
+    .filter()
+    .sort()
+    .pagination()
+    .selectFields()
+    .build();
+
+  // const parcels = Parcel.find(filter);
 
   return parcels;
 };
@@ -80,9 +90,48 @@ const getMe = async (req: Request) => {
   return parcels;
 };
 
+const getParcelByTrackingNumber = async (req: Request) => {
+  const trackingNo = req.params.trackingNumber;
+  const parcel = await Parcel.findOne({ trackingNumber: trackingNo });
+
+  return parcel;
+};
+
+const cancelParcel = async (req: Request) => {
+  const id = req.params.id;
+
+  const parcel = await Parcel.findById(id);
+
+  if (parcel?.status !== IParcelStatus.pending) {
+    throw new AppError(
+      403,
+      "Parcel is already dispatched, can not be cancelled now"
+    );
+  }
+
+  parcel.status = IParcelStatus.cancelled;
+
+  parcel.trackingHistory.push({ status: IParcelStatus.cancelled });
+
+  await parcel.save();
+
+  // const parcel = await Parcel.findByIdAndUpdate(
+  //   id,
+  //   {
+  //     status: IParcelStatus.cancelled,
+  //     $push: { trackingHistory: { status: IParcelStatus.cancelled } },
+  //   },
+  //   { new: true, runValidators: true }
+  // );
+
+  return parcel;
+};
+
 export const parcelService = {
   createParcel,
   updateParcel,
   getParcels,
   getMe,
+  getParcelByTrackingNumber,
+  cancelParcel,
 };
