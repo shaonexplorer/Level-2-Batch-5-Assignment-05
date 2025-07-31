@@ -11,27 +11,26 @@ router.get("/all", authenticate(IRole.admin), userController.getUsers);
 
 router.get(
   "/:id",
-  authenticate(IRole.admin, IRole.user),
+  authenticate(IRole.admin, IRole.sender),
   userController.getUserById
 );
 
 router.patch(
   "/:id",
-  authenticate(IRole.admin, IRole.user),
+  authenticate(IRole.admin, IRole.sender),
   validateByZod(UserUpdateSchema),
   userController.updateUserById
 );
 
 router.delete(
   "/:id",
-  authenticate(IRole.admin, IRole.user),
+  authenticate(IRole.admin, IRole.sender),
   userController.deleteUserById
 );
 
 router.post(
   "/register",
   validateByZod(UserCreateSchema),
-  authenticate(...Object.values(IRole)),
   userController.register
 );
 

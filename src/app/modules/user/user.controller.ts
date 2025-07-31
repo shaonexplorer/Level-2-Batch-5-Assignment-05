@@ -3,6 +3,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { userService } from "./user.service";
 import { IPayloadResponse, sendResponse } from "../../utils/sendResponse";
 import { IUser } from "./user.interface";
+import { ISender } from "../sender/sender.interface";
 
 const getUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -58,13 +59,13 @@ const deleteUserById = catchAsync(
 
 const register = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await userService.register(req);
+    const { userWithNoPass, sender } = await userService.register(req);
 
-    const payload: IPayloadResponse<IUser> = {
+    const payload: IPayloadResponse = {
       status: 201,
       success: true,
       message: "user created successfully",
-      data: user,
+      data: { userWithNoPass, sender },
     };
 
     sendResponse(res, payload);

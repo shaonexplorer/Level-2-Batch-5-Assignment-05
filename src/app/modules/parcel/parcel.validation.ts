@@ -2,7 +2,7 @@ import z from "zod";
 
 export const parcelCreateSchema = z.object({
   receiver: z.object({
-    name: z.string(),
+    firstName: z.string(),
     phoneNumber: z.string(),
     email: z.email(),
     address: z.object({

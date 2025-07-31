@@ -2,6 +2,7 @@ import app from "./app";
 import "dotenv/config";
 import { Server } from "http";
 import mongoose from "mongoose";
+import { seedAdmin } from "./app/utils/seedAdmin";
 
 const port = process.env.PORT;
 const url = process.env.MONGODB_CONNECTION_STRING;
@@ -20,7 +21,10 @@ const startServer = async () => {
   }
 };
 
-startServer();
+(async () => {
+  await startServer();
+  await seedAdmin();
+})();
 
 process.on("unhandledRejection", (err) => {
   console.log("server is closing... ");

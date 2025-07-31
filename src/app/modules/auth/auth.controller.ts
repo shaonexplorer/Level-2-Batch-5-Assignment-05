@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { IUser } from "../user/user.interface";
+import { IRole, IUser } from "../user/user.interface";
 import jwt from "jsonwebtoken";
 import { sendResponse } from "../../utils/sendResponse";
 import "dotenv/config";
 import { catchAsync } from "../../utils/catchAsync";
+import { Admin } from "../admin/admin.model";
 
 const secret = process.env.JWT_SECRET;
 
@@ -15,8 +16,14 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         throw new Error(error);
       }
 
+      const isAdmin = await Admin.find({ userId: user._id });
+
       const token = jwt.sign(
-        { id: user._id, email: user.email, role: user.role },
+        {
+          id: user._id,
+          email: user.email,
+          role: isAdmin ? IRole.admin : IRole.sender,
+        },
         secret as string,
         {
           expiresIn: "30d",
@@ -24,7 +31,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       );
 
       const refressToken = jwt.sign(
-        { id: user._id, email: user.email, role: user.role },
+        {
+          id: user._id,
+          email: user.email,
+          role: isAdmin ? IRole.admin : IRole.sender,
+        },
         secret as string,
         {
           expiresIn: "60d",

@@ -10,7 +10,7 @@ export const UserCreateSchema = z.object({
     message:
       "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
   }),
-  role: z.enum(Object.values(IRole)).optional(), // "user" , "admin"
+  // role: z.enum(Object.values(IRole)).optional(), // "sender" , "admin"
   address: z.object({
     street: z.string(),
     city: z.string(),

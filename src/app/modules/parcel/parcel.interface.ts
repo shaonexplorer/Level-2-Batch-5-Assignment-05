@@ -20,18 +20,8 @@ export interface IParcel {
   _id: Types.ObjectId;
   trackingNumber: string; // Unique tracking number eg- TRK123456789
   status: IParcelStatus; // "pending_pickup", "in_transit", "out_for_delivery", "delivered", "failed_delivery", "cancelled"
-  sender: Types.ObjectId; // Reference to user if registered
-  receiver: {
-    name: string;
-    phoneNumber: string;
-    email: string;
-    address: {
-      street: string;
-      city: string;
-      zipCode: string;
-      country: string;
-    };
-  };
+  sender: Types.ObjectId; // Reference to sender model
+  receiver: Types.ObjectId; // Reference to reciever model
   packageDetails: {
     weightKg: number;
     description: string;

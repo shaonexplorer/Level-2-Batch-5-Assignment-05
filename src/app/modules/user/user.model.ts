@@ -1,38 +1,11 @@
 import { model, Schema } from "mongoose";
-import { IRole, IUser, IUserStatus } from "./user.interface";
-import { string } from "zod";
 import bcrypt from "bcrypt";
-
-const addressSchema = new Schema(
-  {
-    street: { type: string, required: true },
-    city: { type: string, required: true },
-    zipCode: { type: string, required: true },
-    country: { type: string, required: true },
-  },
-  { _id: false }
-);
+import { IUser } from "./user.interface";
 
 const userSchema = new Schema<IUser>(
   {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: false },
     email: { type: String, required: true, unique: true },
-    phoneNumber: { type: String, required: true },
-    role: {
-      type: String,
-      enum: Object.values(IRole),
-      required: false,
-      default: IRole.user,
-    },
     password: { type: String, required: true },
-    address: addressSchema,
-    status: {
-      type: String,
-      enum: Object.values(IUserStatus),
-      required: false,
-      default: IUserStatus.active,
-    },
   },
   { timestamps: true }
 );

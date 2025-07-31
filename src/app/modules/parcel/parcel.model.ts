@@ -10,18 +10,8 @@ const parcelSchema = new Schema<IParcel>(
   {
     trackingNumber: String, // Unique tracking number eg- TRK123456789
     status: { type: String, enum: IParcelStatus }, // "pending_pickup", "in_transit", "out_for_delivery", "delivered", "failed_delivery", "cancelled"
-    sender: { type: Schema.Types.ObjectId, ref: "User" }, // Reference to user if registered
-    receiver: {
-      name: { type: String, required: true },
-      phoneNumber: { type: String, required: true },
-      email: { type: String, required: true },
-      address: {
-        street: { type: String, required: true },
-        city: { type: String, required: true },
-        zipCode: { type: String, required: true },
-        country: { type: String, required: true },
-      },
-    },
+    sender: { type: Schema.Types.ObjectId, ref: "Sender" }, // Reference to sender model
+    receiver: { type: Schema.Types.ObjectId, ref: "Reciever" }, // Reference to reciever model
     packageDetails: {
       weightKg: { type: Number, required: true },
       description: { type: String },

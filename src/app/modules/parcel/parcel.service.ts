@@ -3,12 +3,41 @@ import { Parcel } from "./parcel.model";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import "dotenv/config";
 import { AppError } from "../../utils/appError";
+import { Sender } from "../sender/sender.model";
+import { Reciever } from "../reciever/reciever.model";
+import { IParcelStatus } from "./parcel.interface";
 
 const createParcel = async (req: Request) => {
   const token = req.headers.authorization as string;
   const secret = process.env.JWT_SECRET as string;
   const { id } = jwt.verify(token, secret) as JwtPayload;
-  const parcel = await Parcel.create({ ...req.body, sender: id });
+
+  const sender = await Sender.findOne({ userId: id });
+
+  if (!sender) {
+    throw new AppError(404, "Sender not found");
+  }
+  let receiver;
+
+  receiver = await Reciever.findOneAndUpdate(
+    {
+      phoneNumber: req.body.receiver.phoneNumber,
+    },
+    { ...req.body.receiver },
+    { new: true }
+  );
+
+  if (!receiver) {
+    receiver = await Reciever.create(req.body.receiver);
+  }
+
+  const parcel = await Parcel.create({
+    ...req.body,
+    sender: sender._id,
+    receiver: receiver._id,
+    status: IParcelStatus.pending,
+    trackingHistory: [{ status: IParcelStatus.pending }],
+  });
 
   return parcel;
 };
@@ -40,7 +69,13 @@ const getMe = async (req: Request) => {
   const secret = process.env.JWT_SECRET as string;
   const { id } = jwt.verify(token, secret) as JwtPayload;
 
-  const parcels = await Parcel.find({ sender: id });
+  const sender = await Sender.findOne({ userId: id });
+
+  if (!sender) {
+    throw new AppError(404, "Sender not found");
+  }
+
+  const parcels = await Parcel.find({ sender: sender._id });
 
   return parcels;
 };

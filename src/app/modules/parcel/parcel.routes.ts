@@ -9,14 +9,13 @@ const router = express.Router();
 
 router.post(
   "/",
-  authenticate(...Object.values(IRole)),
   validateByZod(parcelCreateSchema),
   parcelController.createParcel
 );
 
 router.get("/", authenticate(IRole.admin), parcelController.getParcels);
 
-router.get("/me", authenticate(IRole.user), parcelController.getMe);
+router.get("/me", authenticate(IRole.sender), parcelController.getMe);
 
 router.patch(
   "/:id",

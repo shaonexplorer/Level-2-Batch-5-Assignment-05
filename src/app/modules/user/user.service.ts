@@ -4,14 +4,36 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import "dotenv/config";
 import { IRole, IUserStatus } from "./user.interface";
 import { AppError } from "../../utils/appError";
+import { Sender } from "../sender/sender.model";
+import mongoose from "mongoose";
 
 const register = async (req: Request) => {
-  const user = await User.create(req.body);
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const user = await User.create([req.body], { session });
 
-  const userWithNoPass = user.toObject();
-  delete userWithNoPass.password;
+    const sender = await Sender.create(
+      [
+        {
+          ...req.body,
+          userId: user[0]._id,
+        },
+      ],
+      { session }
+    );
 
-  return userWithNoPass;
+    const userWithNoPass = user[0].toObject();
+    delete userWithNoPass.password;
+
+    await session.commitTransaction();
+    session.endSession();
+    return { userWithNoPass, sender };
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw new Error(error as any);
+  }
 };
 
 const getUsers = async () => {
@@ -31,7 +53,7 @@ const getUserById = async (req: Request) => {
     throw new AppError(404, "No user found");
   }
 
-  if (role == IRole.user && id !== user._id.toString()) {
+  if (role == IRole.sender && id !== user._id.toString()) {
     throw new AppError(401, "you are not authorized");
   }
 
@@ -45,11 +67,11 @@ const updateUserById = async (req: Request) => {
 
   const userId = req.params.id;
   // check user cannot update other users
-  if (role == IRole.user && id !== userId) {
+  if (role == IRole.sender && id !== userId) {
     throw new AppError(401, "you are not authorized");
   }
   // check user cannot update role as admin
-  if (role == IRole.user && req.body.role) {
+  if (role == IRole.sender && req.body.role) {
     throw new AppError(401, "you are not authorized");
   }
   const user = await User.findOneAndUpdate({ _id: userId }, req.body, {
@@ -71,7 +93,7 @@ const deleteUserById = async (req: Request) => {
 
   const userId = req.params.id;
   // check only admin can delete users
-  if (role == IRole.user) {
+  if (role == IRole.sender) {
     throw new AppError(401, "you are not authorized");
   }
 

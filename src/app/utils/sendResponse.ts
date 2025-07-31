@@ -1,16 +1,13 @@
 import { Response } from "express";
 
-export interface IPayloadResponse<T> {
+export interface IPayloadResponse {
   status: number;
   success: boolean;
   message: string;
-  data: T;
+  data: any;
 }
 
-export const sendResponse = <T>(
-  res: Response,
-  payload: IPayloadResponse<T>
-) => {
+export const sendResponse = (res: Response, payload: IPayloadResponse) => {
   res.status(payload.status).json({
     status: payload.status,
     success: payload.success,
