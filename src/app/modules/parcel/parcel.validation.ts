@@ -63,3 +63,7 @@ export const parcelUpdateSchema = z.object({
   expectedDeliveryDate: z.date().optional(),
   actualDeliveryDate: z.date().optional(),
 });
+
+export const parcelStatusUpdateSchema = z.object({
+  status: z.string(), // "pending_pickup", "in_transit", "out_for_delivery", "delivered", "failed_delivery", "cancelled"
+});

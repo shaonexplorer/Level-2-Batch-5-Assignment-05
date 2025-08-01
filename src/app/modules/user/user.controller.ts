@@ -57,6 +57,19 @@ const deleteUserById = catchAsync(
   }
 );
 
+const blockUserById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await userService.blockUserById(req);
+
+    sendResponse(res, {
+      status: 200,
+      success: true,
+      message: "user successfully blocked",
+      data: user,
+    });
+  }
+);
+
 const register = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userWithNoPass, sender } = await userService.register(req);
@@ -78,4 +91,5 @@ export const userController = {
   getUserById,
   updateUserById,
   deleteUserById,
+  blockUserById,
 };

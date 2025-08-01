@@ -22,11 +22,13 @@ router.patch(
   userController.updateUserById
 );
 
-router.delete(
-  "/:id",
-  authenticate(IRole.admin, IRole.sender),
-  userController.deleteUserById
+router.patch(
+  "/block/:id",
+  authenticate(IRole.admin),
+  userController.blockUserById
 );
+
+router.delete("/:id", authenticate(IRole.admin), userController.deleteUserById);
 
 router.post(
   "/register",

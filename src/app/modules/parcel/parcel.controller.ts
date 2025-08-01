@@ -29,6 +29,19 @@ const updateParcel = catchAsync(
   }
 );
 
+const updateParcelStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const parcel = await parcelService.updateParcelStatus(req);
+
+    sendResponse(res, {
+      status: 201,
+      success: true,
+      message: "parcel status updated successfully",
+      data: parcel,
+    });
+  }
+);
+
 const getParcels = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcels = await parcelService.getParcels(req);
@@ -88,4 +101,5 @@ export const parcelController = {
   getMe,
   getParcelByTrackingNumber,
   cancelParcel,
+  updateParcelStatus,
 };

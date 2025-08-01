@@ -10,6 +10,7 @@ export enum IUserStatus {
   active = "active",
   inactive = "inactive",
   blocked = "blocked",
+  deleted = "deleted",
 }
 
 export interface IUser {

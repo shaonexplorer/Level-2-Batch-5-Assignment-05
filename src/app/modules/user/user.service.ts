@@ -65,19 +65,25 @@ const updateUserById = async (req: Request) => {
   const secret = process.env.JWT_SECRET as string;
   const { id, role } = jwt.verify(token, secret) as JwtPayload;
 
-  const userId = req.params.id;
+  const sender = await Sender.findOne({ userId: id });
+
+  const senderIdToUpdate = req.params.id;
   // check user cannot update other users
-  if (role == IRole.sender && id !== userId) {
+  if (role == IRole.sender && sender?._id.toString() !== senderIdToUpdate) {
     throw new AppError(401, "you are not authorized");
   }
   // check user cannot update role as admin
   if (role == IRole.sender && req.body.role) {
     throw new AppError(401, "you are not authorized");
   }
-  const user = await User.findOneAndUpdate({ _id: userId }, req.body, {
-    new: true,
-    runValidators: true,
-  }).select("-password");
+  const user = await User.findOneAndUpdate(
+    { _id: senderIdToUpdate },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).select("-password");
 
   if (!user) {
     throw new AppError(404, "No user found");
@@ -99,7 +105,26 @@ const deleteUserById = async (req: Request) => {
 
   const user = await User.findOneAndUpdate(
     { _id: userId },
-    { status: IUserStatus.inactive },
+    { status: IUserStatus.deleted },
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).select("-password");
+
+  if (!user) {
+    throw new AppError(404, "No user found");
+  }
+
+  return user;
+};
+
+const blockUserById = async (req: Request) => {
+  const senderIdToBlock = req.params.id;
+
+  const user = await Sender.findOneAndUpdate(
+    { _id: senderIdToBlock },
+    { status: IUserStatus.blocked },
     {
       new: true,
       runValidators: true,
@@ -119,4 +144,5 @@ export const userService = {
   getUserById,
   updateUserById,
   deleteUserById,
+  blockUserById,
 };

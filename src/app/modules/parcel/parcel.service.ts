@@ -7,6 +7,7 @@ import { Sender } from "../sender/sender.model";
 import { Reciever } from "../reciever/reciever.model";
 import { IParcelStatus } from "./parcel.interface";
 import { QueryBuilder } from "../../utils/queryBuilder";
+import { IUserStatus } from "../user/user.interface";
 
 const createParcel = async (req: Request) => {
   const token = req.headers.authorization as string;
@@ -14,6 +15,10 @@ const createParcel = async (req: Request) => {
   const { id } = jwt.verify(token, secret) as JwtPayload;
 
   const sender = await Sender.findOne({ userId: id });
+
+  if (sender?.status == (IUserStatus.blocked || IUserStatus.deleted)) {
+    throw new AppError(403, "User is not authorized");
+  }
 
   if (!sender) {
     throw new AppError(404, "Sender not found");
@@ -57,6 +62,20 @@ const updateParcel = async (req: Request) => {
   return parcel;
 };
 
+const updateParcelStatus = async (req: Request) => {
+  const parcel = Parcel.findByIdAndUpdate(
+    req.params.id,
+    { ...req.body, $push: { trackingHistory: { status: req.body.status } } },
+    { new: true, runValidators: true }
+  );
+
+  if (!parcel) {
+    throw new AppError(404, "parcel not found");
+  }
+
+  return parcel;
+};
+
 const getParcels = async (req: Request) => {
   const filter = req.query;
 
@@ -81,6 +100,10 @@ const getMe = async (req: Request) => {
 
   const sender = await Sender.findOne({ userId: id });
 
+  if (sender?.status == (IUserStatus.blocked || IUserStatus.deleted)) {
+    throw new AppError(403, "User is not authorized");
+  }
+
   if (!sender) {
     throw new AppError(404, "Sender not found");
   }
@@ -93,14 +116,23 @@ const getMe = async (req: Request) => {
 const getParcelByTrackingNumber = async (req: Request) => {
   const trackingNo = req.params.trackingNumber;
   const parcel = await Parcel.findOne({ trackingNumber: trackingNo });
-
   return parcel;
 };
 
 const cancelParcel = async (req: Request) => {
-  const id = req.params.id;
+  const parcelId = req.params.id;
 
-  const parcel = await Parcel.findById(id);
+  const token = req.headers.authorization as string;
+  const secret = process.env.JWT_SECRET as string;
+  const { id } = jwt.verify(token, secret) as JwtPayload;
+
+  const sender = await Sender.findOne({ userId: id });
+
+  if (sender?.status == (IUserStatus.blocked || IUserStatus.deleted)) {
+    throw new AppError(403, "User is not authorized");
+  }
+
+  const parcel = await Parcel.findById(parcelId);
 
   if (parcel?.status !== IParcelStatus.pending) {
     throw new AppError(
@@ -134,4 +166,5 @@ export const parcelService = {
   getMe,
   getParcelByTrackingNumber,
   cancelParcel,
+  updateParcelStatus,
 };
