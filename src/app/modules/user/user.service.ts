@@ -47,17 +47,18 @@ const getUserById = async (req: Request) => {
   const { id, role } = jwt.verify(token, secret) as JwtPayload;
 
   const userId = req.params.id;
-  const user = await User.findById(userId).select("-password");
 
-  if (!user) {
+  const sender = await Sender.findOne({ userId }).select("-password");
+
+  if (!sender) {
     throw new AppError(404, "No user found");
   }
 
-  if (role == IRole.sender && id !== user._id.toString()) {
+  if (role == IRole.sender && id !== userId) {
     throw new AppError(401, "you are not authorized");
   }
 
-  return user;
+  return sender;
 };
 
 const updateUserById = async (req: Request) => {
@@ -65,31 +66,27 @@ const updateUserById = async (req: Request) => {
   const secret = process.env.JWT_SECRET as string;
   const { id, role } = jwt.verify(token, secret) as JwtPayload;
 
-  const sender = await Sender.findOne({ userId: id });
+  const userId = req.params.id;
 
-  const senderIdToUpdate = req.params.id;
   // check user cannot update other users
-  if (role == IRole.sender && sender?._id.toString() !== senderIdToUpdate) {
+  if (role == IRole.sender && id !== userId) {
     throw new AppError(401, "you are not authorized");
   }
   // check user cannot update role as admin
   if (role == IRole.sender && req.body.role) {
     throw new AppError(401, "you are not authorized");
   }
-  const user = await User.findOneAndUpdate(
-    { _id: senderIdToUpdate },
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    }
-  ).select("-password");
 
-  if (!user) {
+  const senderToUpdate = await Sender.findOneAndUpdate({ userId }, req.body, {
+    new: true,
+    runValidators: true,
+  }).select("-password");
+
+  if (!senderToUpdate) {
     throw new AppError(404, "No user found");
   }
 
-  return user;
+  return senderToUpdate;
 };
 
 const deleteUserById = async (req: Request) => {
@@ -103,8 +100,8 @@ const deleteUserById = async (req: Request) => {
     throw new AppError(401, "you are not authorized");
   }
 
-  const user = await User.findOneAndUpdate(
-    { _id: userId },
+  const user = await Sender.findOneAndUpdate(
+    { userId },
     { status: IUserStatus.deleted },
     {
       new: true,
@@ -120,10 +117,10 @@ const deleteUserById = async (req: Request) => {
 };
 
 const blockUserById = async (req: Request) => {
-  const senderIdToBlock = req.params.id;
+  const userId = req.params.id;
 
   const user = await Sender.findOneAndUpdate(
-    { _id: senderIdToBlock },
+    { userId },
     { status: IUserStatus.blocked },
     {
       new: true,
