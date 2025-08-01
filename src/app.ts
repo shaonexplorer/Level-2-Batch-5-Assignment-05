@@ -26,7 +26,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/api/v1", (req: Request, res: Response, next: NextFunction) => {
+app.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({
     status: 200,
     success: true,
