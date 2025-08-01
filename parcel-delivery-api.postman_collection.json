@@ -1,0 +1,1199 @@
+{
+	"info": {
+		"_postman_id": "b72f6731-172b-4998-ac26-4f0d8fb2fad4",
+		"name": "parcel-delivery-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37888631"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODg4Yzk3NDVlMGNkYzUyZGJiYjVlOCIsImVtYWlsIjoicWJpdHNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzUzODM3NTI0LCJleHAiOjE3NTY0Mjk1MjR9.EkKtjscwxrnvWNtRSH4zCJ9cvB_RA2qFLNMZ-tVp7Ig",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \"firstName\":\"abir\",\r\n  \"email\": \"apple@gmail.com\",\r\n  \"password\":\"123\",\r\n  \"phoneNumber\":\"01680051016\",\r\n  \"address\":{\r\n       \"street\":\"park avenue\",\r\n    \"city\": \"dhaka\",\r\n    \"zipCode\": \"1216\",\r\n    \"country\": \"bangladesh\"\r\n  }\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/user/register",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response content type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the structure of the data array and its objects\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"    ",
+									"    responseData.data.forEach(function(user) {",
+									"        pm.expect(user).to.be.an('object');",
+									"        pm.expect(user).to.have.all.keys('_id', 'email', 'createdAt', 'updatedAt', '__v');",
+									"        pm.expect(user._id).to.be.a('string').that.is.not.empty;",
+									"        pm.expect(user.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/); // Valid email format",
+									"        pm.expect(user.createdAt).to.be.a('string').that.is.not.empty;",
+									"        pm.expect(user.updatedAt).to.be.a('string').that.is.not.empty;",
+									"        pm.expect(user.__v).to.be.a('number');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"",
+									"    responseData.data.forEach(user => {",
+									"        pm.expect(user.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is invalid\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"CreatedAt and UpdatedAt are in valid date format\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"",
+									"    responseData.data.forEach(user => {",
+									"        pm.expect(user.createdAt).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$/, \"CreatedAt is not in valid date format\");",
+									"        pm.expect(user.updatedAt).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$/, \"UpdatedAt is not in valid date format\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODg4Yzk3NDVlMGNkYzUyZGJiYjVlOCIsImVtYWlsIjoicWJpdHNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzUzODM3NTI0LCJleHAiOjE3NTY0Mjk1MjR9.EkKtjscwxrnvWNtRSH4zCJ9cvB_RA2qFLNMZ-tVp7Ig",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \"firstName\":\"abir\",\r\n  \"email\": \"qbits@gmail.com\",\r\n  \"password\":\"123\",\r\n  \"phoneNumber\":\"01680051016\",\r\n  \"address\":{\r\n       \"street\":\"park avenue\",\r\n    \"city\": \"dhaka\",\r\n    \"zipCode\": \"1216\",\r\n    \"country\": \"bangladesh\"\r\n  }\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/user/all",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 401\", function () {",
+									"    pm.expect(pm.response.code).to.equal(401);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has a valid Content-Type of application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains the error object\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('error').that.is.an('object');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Error object has required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.error).to.exist;",
+									"    pm.expect(responseData.error).to.have.all.keys('status', 'message');",
+									"});",
+									"",
+									"",
+									"pm.test(\"The message field must be a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODk3MDExMGEyZDA3NGQ1YzY3YmJjZSIsImVtYWlsIjoiaHBAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTM4NDEzNTEsImV4cCI6MTc1OTAyNTM1MX0.sBLmig1vO3eXSuO6V3XISTEwdZgxbGWElnBOEdFCeeI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/user/688970110a2d074d5c67bbce",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"688970110a2d074d5c67bbce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 401\", function () {",
+									"    pm.expect(pm.response.code).to.eql(401);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains a success field that is true\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.success).to.be.true;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Error object is present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('error').that.is.an('object');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has a valid structure for the error message\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.all.keys('status', 'success', 'message', 'error');",
+									"    pm.expect(responseData.error).to.be.an('object').that.has.all.keys('status', 'message');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODk3MDExMGEyZDA3NGQ1YzY3YmJjZSIsImVtYWlsIjoiaHBAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTM4NDEzNTEsImV4cCI6MTc1OTAyNTM1MX0.sBLmig1vO3eXSuO6V3XISTEwdZgxbGWElnBOEdFCeeI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/user/688970110a2d074d5c67bbce",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"688970110a2d074d5c67bbce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "block user by id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGI0NTBmOTk4MDRkMTA4NGJhN2JkZiIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU0MDQ4NDM2LCJleHAiOjE3NTY2NDA0MzZ9.mBrNxZOw7Jt7LZL4upi2rOiOQfft2yKgOe5BzPY3-tE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/user/block/688b46860c5df2f4dd53e1c9",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"block",
+								"688b46860c5df2f4dd53e1c9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 401\", function () {",
+									"    pm.expect(pm.response.code).to.equal(401);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains an error object\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('error').that.is.an('object');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Error object has required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.error).to.exist;",
+									"    pm.expect(responseData.error).to.have.all.keys('status', 'message');",
+									"});",
+									"",
+									"",
+									"pm.test(\"The message must be a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.error).to.be.an('object');",
+									"    pm.expect(responseData.error.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODk3MDExMGEyZDA3NGQ1YzY3YmJjZSIsImVtYWlsIjoiaHBAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTM4NDEzNTEsImV4cCI6MTc1OTAyNTM1MX0.sBLmig1vO3eXSuO6V3XISTEwdZgxbGWElnBOEdFCeeI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/user/688970110a2d074d5c67bbce",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"688970110a2d074d5c67bbce"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.all.keys('status', 'success', 'message', 'data');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Success should be a boolean value\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.success).to.be.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data.email).to.exist;",
+									"    pm.expect(responseData.data.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is invalid\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"CreatedAt and UpdatedAt are in a valid date format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('object').that.includes.all.keys('_id', 'email', 'createdAt', 'updatedAt', '__v');",
+									"    ",
+									"    const createdAt = new Date(responseData.data.createdAt);",
+									"    const updatedAt = new Date(responseData.data.updatedAt);",
+									"    ",
+									"    pm.expect(createdAt.getTime()).to.be.above(0, \"CreatedAt is not a valid date\");",
+									"    pm.expect(updatedAt.getTime()).to.be.above(0, \"UpdatedAt is not a valid date\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n  \"email\": \"admin@gmail.com\",\r\n  \"password\":\"123\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/auth/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains success field that is true\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('success', true);",
+									"});",
+									"",
+									"",
+									"pm.test(\"The response message must be a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response data should be null\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.null;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n  \"email\": \"qbits@gmail.com\",\r\n  \"password\":\"123\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/auth/logout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "parcel",
+			"item": [
+				{
+					"name": "create parcel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGIyN2YxYjFiMThjOGJmNGEzZDE0OSIsImVtYWlsIjoid2FsdG9uQGdtYWlsLmNvbSIsInJvbGUiOiJzZW5kZXIiLCJpYXQiOjE3NTQwNTE1OTYsImV4cCI6MTc1NjY0MzU5Nn0.wPsba6_xKr8uNkUMk7jJH6sXArD2XxqUl5pKwqVbWz0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"receiver\": {\r\n    \"firstName\": \"Jane Doe\",\r\n    \"phoneNumber\": \"+8801712345678\",\r\n    \"email\": \"jane.doe@example.com\",\r\n    \"address\": {\r\n      \"street\": \"123 Main Street\",\r\n      \"city\": \"Dhaka\",\r\n      \"zipCode\": \"1200\",\r\n      \"country\": \"Bangladesh\"\r\n    }\r\n  },\r\n  \"packageDetails\": {\r\n    \"weightKg\": 46.2,\r\n    \"description\": \"Household Items\",\r\n    \"fragile\": true\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/parcel",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"parcel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update parcel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.expect(pm.response.code).to.equal(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.all.keys('status', 'success', 'message', 'data');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Status is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.status).to.be.a('number').and.to.be.at.least(0);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Success should be a boolean value\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.success).to.be.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"The message must be a string and can be empty\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODg4Yzk3NDVlMGNkYzUyZGJiYjVlOCIsImVtYWlsIjoicWJpdHNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzUzODQzNDg2LCJleHAiOjE3NTkwMjc0ODZ9.VmOU8OZ5oZbForVu1rXOw4OQWlPjLL85QFoM8YVXA_E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"status\":\"picked_up\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/parcel/6889babc169fd465af5e09ea",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"parcel",
+								"6889babc169fd465af5e09ea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update parcel status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.expect(pm.response.code).to.eql(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has a success field and it is true\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('success').that.is.equal(true);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains a message field that is a string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has a status field that is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('status').that.is.a('number').and.is.at.least(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODg4Yzk3NDVlMGNkYzUyZGJiYjVlOCIsImVtYWlsIjoicWJpdHNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzUzODQzNDg2LCJleHAiOjE3NTkwMjc0ODZ9.VmOU8OZ5oZbForVu1rXOw4OQWlPjLL85QFoM8YVXA_E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"status\":\"picked_up\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/parcel/6889babc169fd465af5e09ea",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"parcel",
+								"6889babc169fd465af5e09ea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all parcels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the structure of the 'data' array and ensure it contains at least one element\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"",
+									"    responseData.data.forEach(function(parcel) {",
+									"        pm.expect(parcel).to.be.an('object');",
+									"        pm.expect(parcel).to.have.all.keys('packageDetails', 'paymentDetails', '_id', 'status', 'sender', 'receiver', 'trackingHistory', 'createdAt', 'updatedAt', 'trackingNumber', '__v');",
+									"",
+									"        pm.expect(parcel.packageDetails).to.be.an('object').that.has.all.keys('weightKg', 'description', 'fragile');",
+									"        pm.expect(parcel.paymentDetails).to.be.an('object').that.has.all.keys('currency');",
+									"        pm.expect(parcel.trackingHistory).to.be.an('array');",
+									"",
+									"        parcel.trackingHistory.forEach(function(history) {",
+									"            pm.expect(history).to.be.an('object').that.has.all.keys('status', 'createdAt', 'updatedAt');",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Each packageDetails object has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.have.property('data').that.is.an('array').with.length.above(0);",
+									"    ",
+									"    responseData.data.forEach(function(parcel) {",
+									"        pm.expect(parcel).to.have.property('packageDetails').that.is.an('object');",
+									"        pm.expect(parcel.packageDetails).to.have.all.keys('weightKg', 'description', 'fragile');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Payment details contain a valid currency\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"    ",
+									"    responseData.data.forEach(function(parcel) {",
+									"        pm.expect(parcel.paymentDetails).to.be.an('object');",
+									"        pm.expect(parcel.paymentDetails.currency).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Currency must not be empty\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"TrackingHistory array contains valid entries with required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"",
+									"    responseData.data.forEach(parcel => {",
+									"        pm.expect(parcel.trackingHistory).to.be.an('array').that.is.not.empty;",
+									"",
+									"        parcel.trackingHistory.forEach(history => {",
+									"            pm.expect(history).to.have.all.keys('status', 'createdAt', 'updatedAt');",
+									"            pm.expect(history.status).to.be.a('string');",
+									"            pm.expect(history.createdAt).to.be.a('string');",
+									"            pm.expect(history.updatedAt).to.be.a('string');",
+									"        });",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODg4Yzk3NDVlMGNkYzUyZGJiYjVlOCIsImVtYWlsIjoicWJpdHNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzUzODQzNDg2LCJleHAiOjE3NTkwMjc0ODZ9.VmOU8OZ5oZbForVu1rXOw4OQWlPjLL85QFoM8YVXA_E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"status\":\"picked_up\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/parcel?status=out_for_delivery&receiver=688b32cdfc4b76773b2cf237",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"parcel"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "out_for_delivery"
+								},
+								{
+									"key": "sender",
+									"value": "688b26cab32ac05a0a9b4732",
+									"disabled": true
+								},
+								{
+									"key": "receiver",
+									"value": "688b32cdfc4b76773b2cf237"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get my parcels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains expected fields in the data array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"",
+									"    responseData.data.forEach(function(parcel) {",
+									"        pm.expect(parcel).to.have.all.keys('packageDetails', 'paymentDetails', '_id', 'status', 'sender', 'receiver', 'trackingHistory', 'createdAt', 'updatedAt', 'trackingNumber', '__v');",
+									"        ",
+									"        pm.expect(parcel.packageDetails).to.have.all.keys('weightKg', 'description', 'fragile');",
+									"        pm.expect(parcel.paymentDetails).to.have.all.keys('currency');",
+									"        ",
+									"        pm.expect(parcel.trackingHistory).to.be.an('array');",
+									"        parcel.trackingHistory.forEach(function(history) {",
+									"            pm.expect(history).to.have.all.keys('status', 'createdAt', 'updatedAt');",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Weight is a non-negative number\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"    ",
+									"    responseData.data.forEach(function(parcel) {",
+									"        pm.expect(parcel.packageDetails.weightKg).to.be.a('number').that.is.at.least(0, \"Weight should be a non-negative number\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Currency is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"    ",
+									"    responseData.data.forEach(function(item) {",
+									"        pm.expect(item.paymentDetails.currency).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Tracking history is an array with at least one element\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;",
+									"    ",
+									"    responseData.data.forEach(function(parcel) {",
+									"        pm.expect(parcel.trackingHistory).to.be.an('array').that.is.not.empty;",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGIyNmNhYjMyYWMwNWEwYTliNDczMCIsImVtYWlsIjoicWJpdHNAZ21haWwuY29tIiwicm9sZSI6InNlbmRlciIsImlhdCI6MTc1Mzk1MTQ5NywiZXhwIjoxNzU2NTQzNDk3fQ._KdptEHfQY4AEMi1jc5B52ndwOi_QrWhdIX3kOLWAiA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/parcel/me",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"parcel",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "track parcel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the structure of the data object\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('data').that.is.an('object');",
+									"",
+									"    const data = responseData.data;",
+									"    pm.expect(data).to.have.all.keys('packageDetails', 'paymentDetails', '_id', 'status', 'sender', 'receiver', 'trackingHistory', 'createdAt', 'updatedAt', 'trackingNumber', '__v');",
+									"",
+									"    pm.expect(data.packageDetails).to.have.all.keys('weightKg', 'description', 'fragile');",
+									"    pm.expect(data.paymentDetails).to.have.all.keys('currency');",
+									"",
+									"    pm.expect(data.trackingHistory).to.be.an('array');",
+									"    data.trackingHistory.forEach(function(history) {",
+									"        pm.expect(history).to.have.all.keys('status', 'createdAt', 'updatedAt');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Weight must be a non-negative number\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data.packageDetails).to.exist;",
+									"    pm.expect(responseData.data.packageDetails.weightKg).to.be.a('number').and.to.be.at.least(0, \"Weight should be non-negative\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Currency must be a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.paymentDetails.currency).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Currency should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Tracking history contains at least one entry with valid status and timestamps\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data.trackingHistory).to.be.an('array').that.is.not.empty;",
+									"",
+									"    responseData.data.trackingHistory.forEach(entry => {",
+									"        pm.expect(entry).to.have.property('status').that.is.a('string').and.is.not.empty;",
+									"        pm.expect(entry).to.have.property('createdAt').that.is.a('string').and.is.not.empty;",
+									"        pm.expect(entry).to.have.property('updatedAt').that.is.a('string').and.is.not.empty;",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGIyNmNhYjMyYWMwNWEwYTliNDczMCIsImVtYWlsIjoicWJpdHNAZ21haWwuY29tIiwicm9sZSI6InNlbmRlciIsImlhdCI6MTc1Mzk1MTQ5NywiZXhwIjoxNzU2NTQzNDk3fQ._KdptEHfQY4AEMi1jc5B52ndwOi_QrWhdIX3kOLWAiA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/parcel/TRK1753953824796250",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"parcel",
+								"TRK1753953824796250"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel parcel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {",
+									"    pm.expect(pm.response.status).to.eql(400);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains a success flag\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('success').that.is.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Error object has required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.error).to.exist;",
+									"    ",
+									"    const errorFields = ['stringValue', 'valueType', 'kind', 'value', 'path', 'reason', 'name', 'message'];",
+									"    errorFields.forEach(field => {",
+									"        pm.expect(responseData.error).to.have.property(field);",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"The message field must be a non-empty string indicating the reason for the error\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGIyNmNhYjMyYWMwNWEwYTliNDczMCIsImVtYWlsIjoicWJpdHNAZ21haWwuY29tIiwicm9sZSI6InNlbmRlciIsImlhdCI6MTc1Mzk1MTQ5NywiZXhwIjoxNzU2NTQzNDk3fQ._KdptEHfQY4AEMi1jc5B52ndwOi_QrWhdIX3kOLWAiA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/parcel/cancel/688b362048ab9897be3ad147",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"parcel",
+								"cancel",
+								"688b362048ab9897be3ad147"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
