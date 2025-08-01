@@ -60,9 +60,7 @@ What you need to install before setting up the project.
 3.  **Set up environment variables:**
     Create a `.env` file in the root directory of the project and add the following:
 
-    ```
-
-    ```
+```
 
 # mongoDB
 
@@ -78,9 +76,9 @@ JWT_SECRET = your jwt secret
 ADMIN_EMAIL= set email for admin
 ADMIN_PASSWORD= set password for admin
 
-````
+```
 
-    _Make sure to replace placeholders like `your_database_connection_string`,`your jwt secret` with your actual values.
+\_Make sure to replace placeholders like `your_database_connection_string`,`your jwt secret` with your actual values.
 
 4.  **Start the development server:**
     ```bash
@@ -94,23 +92,26 @@ ADMIN_PASSWORD= set password for admin
 
 ## API Endpoints
 
-| Method   | Endpoint                                   | Description                                |
-| :------- | :----------------------------------------- | :----------------------------------------- |
-|  POST	   |    /api/v1/user/register                   |	Register a new user                      |
-|  POST    |	/api/v1/auth/login                      |	Login an admin or sender                 |
-|  POST    |	/api/v1/auth/logout                     |	Logout a user                            |
-|  GET     |	/api/v1/user/all                        |	Get all users                            |
-|  GET     |	/api/v1/user/:userId                    |	Get user by ID                           |
-|  PATCH   |	/api/v1/user/:userId                    |	Update user by ID                        |
-|  PATCH   |	/api/v1/user/block/:userId              |	Block user by ID                         |
-|  DELETE  |	/api/v1/user/:userId                    |	Delete user by ID                        |
-|  POST    |	/api/v1/parcel                          |	Create a new parcel                      |
-|  PATCH   |	/api/v1/parcel/:parcelId                |	Update a parcel                          |
-|  PATCH   |	/api/v1/parcel/:parcelId                |	Update a parcel's status                 |
-|  GET     |	/api/v1/parcel?status=pending_pickup    |   Get all parcels (with optional filters)  |
-|  GET     |	/api/v1/parcel/me                       |	Get parcels for the authenticated user   |
-|  GET     |	/api/v1/parcel/:trackingNumber          |	Track a parcel using its tracking number |
-|  PATCH   |	/api/v1/parcel/cancel/:parcelId         |	Cancel a parcel                          |
+```
+
+| Method | Endpoint                             | Description                              |
+| :----- | :----------------------------------- | :--------------------------------------- |
+| POST   | /api/v1/user/register                | Register a new user                      |
+| POST   | /api/v1/auth/login                   | Login an admin or sender                 |
+| POST   | /api/v1/auth/logout                  | Logout a user                            |
+| GET    | /api/v1/user/all                     | Get all users                            |
+| GET    | /api/v1/user/:userId                 | Get user by ID                           |
+| PATCH  | /api/v1/user/:userId                 | Update user by ID                        |
+| PATCH  | /api/v1/user/block/:userId           | Block user by ID                         |
+| DELETE | /api/v1/user/:userId                 | Delete user by ID                        |
+| POST   | /api/v1/parcel                       | Create a new parcel                      |
+| PATCH  | /api/v1/parcel/:parcelId             | Update a parcel                          |
+| PATCH  | /api/v1/parcel/:parcelId             | Update a parcel's status                 |
+| GET    | /api/v1/parcel?status=pending_pickup | Get all parcels (with optional filters)  |
+| GET    | /api/v1/parcel/me                    | Get parcels for the authenticated user   |
+| GET    | /api/v1/parcel/:trackingNumber       | Track a parcel using its tracking number |
+| PATCH  | /api/v1/parcel/cancel/:parcelId      | Cancel a parcel                          |
 
 ---
-````
+
+```
