@@ -92,7 +92,7 @@ What you need to install before setting up the project.
 
 ## API Endpoints
 
-    ```
+```
 
     | Method | Endpoint                             | Description                              |
     | :----- | :----------------------------------- | :--------------------------------------- |
@@ -112,4 +112,4 @@ What you need to install before setting up the project.
     | GET    | /api/v1/parcel/:trackingNumber       | Track a parcel using its tracking number |
     | PATCH  | /api/v1/parcel/cancel/:parcelId      | Cancel a parcel                          |
 
-    ```
+```
