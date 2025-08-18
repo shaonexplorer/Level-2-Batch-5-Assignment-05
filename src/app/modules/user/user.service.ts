@@ -11,7 +11,10 @@ const register = async (req: Request) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const user = await User.create([req.body], { session });
+    const user = await User.create(
+      [{ email: req.body.email, password: req.body.password }],
+      { session }
+    );
 
     const sender = await Sender.create(
       [
