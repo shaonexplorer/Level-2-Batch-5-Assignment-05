@@ -94,7 +94,7 @@ const getParcels = async (req: Request) => {
 };
 
 const getMe = async (req: Request) => {
-  const token = req.headers.authorization as string;
+  const token = req.headers.authorization || (req.cookies.token as string);
   const secret = process.env.JWT_SECRET as string;
   const { id } = jwt.verify(token, secret) as JwtPayload;
 
