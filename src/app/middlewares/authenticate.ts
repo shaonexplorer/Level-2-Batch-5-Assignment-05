@@ -7,7 +7,7 @@ import { AppError } from "../utils/appError";
 export const authenticate =
   (...role: IRole[]) =>
   (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization as string;
+    const token = req.headers.authorization || (req.cookies.token as string);
     const secret = process.env.JWT_SECRET as string;
     const user = jwt.verify(token, secret) as JwtPayload;
 
