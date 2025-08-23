@@ -108,7 +108,9 @@ const getMe = async (req: Request) => {
     throw new AppError(404, "Sender not found");
   }
 
-  const parcels = await Parcel.find({ sender: sender._id });
+  const parcels = await Parcel.find({ sender: sender._id }).populate(
+    "receiver"
+  );
 
   return parcels;
 };
