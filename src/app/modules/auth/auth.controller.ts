@@ -42,10 +42,15 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         }
       );
 
-      res.cookie("token", token, { secure: false, httpOnly: true });
-      res.cookie("refreshToken", refressToken, {
-        secure: false,
+      res.cookie("token", token, {
+        secure: true,
         httpOnly: true,
+        sameSite: "none",
+      });
+      res.cookie("refreshToken", refressToken, {
+        secure: true,
+        httpOnly: true,
+        sameSite: "none",
       });
 
       const userWithoutPassword = user.toObject();
