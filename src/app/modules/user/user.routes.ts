@@ -10,6 +10,12 @@ const router = express.Router();
 router.get("/all", authenticate(IRole.admin), userController.getUsers);
 
 router.get(
+  "/me",
+  authenticate(IRole.admin, IRole.sender),
+  userController.getMe
+);
+
+router.get(
   "/:id",
   authenticate(IRole.admin, IRole.sender),
   userController.getUserById

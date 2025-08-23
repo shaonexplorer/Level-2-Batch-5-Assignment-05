@@ -44,6 +44,14 @@ const getUsers = async () => {
   return users;
 };
 
+const getMe = async (req: Request) => {
+  const token = req.cookies.token as string;
+  const secret = process.env.JWT_SECRET as string;
+  const { id, role } = jwt.verify(token, secret) as JwtPayload;
+  const user = await User.findById(id).select("-password");
+  return user;
+};
+
 const getUserById = async (req: Request) => {
   const token = req.headers.authorization as string;
   const secret = process.env.JWT_SECRET as string;
@@ -145,4 +153,5 @@ export const userService = {
   updateUserById,
   deleteUserById,
   blockUserById,
+  getMe,
 };

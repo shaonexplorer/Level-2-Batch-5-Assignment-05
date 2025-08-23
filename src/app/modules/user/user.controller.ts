@@ -84,6 +84,17 @@ const register = catchAsync(
     sendResponse(res, payload);
   }
 );
+const getMe = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await userService.getMe(req);
+    sendResponse(res, {
+      status: 200,
+      success: true,
+      message: "user profile retrieved successfully",
+      data: user,
+    });
+  }
+);
 
 export const userController = {
   register,
@@ -92,4 +103,5 @@ export const userController = {
   updateUserById,
   deleteUserById,
   blockUserById,
+  getMe,
 };
