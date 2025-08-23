@@ -71,8 +71,12 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const logout = catchAsync((req: Request, res: Response, next: NextFunction) => {
-  res.clearCookie("token");
-  res.clearCookie("refreshToken");
+  res.clearCookie("token", { httpOnly: true, secure: true, sameSite: "none" });
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
 
   sendResponse(res, {
     status: 200,
