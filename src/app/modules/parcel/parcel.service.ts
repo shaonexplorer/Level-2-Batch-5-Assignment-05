@@ -10,7 +10,7 @@ import { QueryBuilder } from "../../utils/queryBuilder";
 import { IUserStatus } from "../user/user.interface";
 
 const createParcel = async (req: Request) => {
-  const token = req.headers.authorization as string;
+  const token = req.headers.authorization || (req.cookies.token as string);
   const secret = process.env.JWT_SECRET as string;
   const { id } = jwt.verify(token, secret) as JwtPayload;
 
@@ -124,7 +124,7 @@ const getParcelByTrackingNumber = async (req: Request) => {
 const cancelParcel = async (req: Request) => {
   const parcelId = req.params.id;
 
-  const token = req.headers.authorization as string;
+  const token = req.headers.authorization || (req.cookies.token as string);
   const secret = process.env.JWT_SECRET as string;
   const { id } = jwt.verify(token, secret) as JwtPayload;
 
