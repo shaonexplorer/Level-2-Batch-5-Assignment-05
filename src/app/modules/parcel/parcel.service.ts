@@ -130,7 +130,10 @@ const cancelParcel = async (req: Request) => {
 
   const sender = await Sender.findOne({ userId: id });
 
-  if (sender?.status == (IUserStatus.blocked || IUserStatus.deleted)) {
+  if (
+    sender?.status == IUserStatus.blocked ||
+    sender?.status == IUserStatus.deleted
+  ) {
     throw new AppError(403, "User is not authorized");
   }
 
