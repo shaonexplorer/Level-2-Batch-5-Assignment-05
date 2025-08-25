@@ -87,7 +87,7 @@ const getParcels = async (req: Request) => {
     .pagination()
     .selectFields()
     .build()
-    .populate("reciever");
+    .populate("receiver");
 
   // const parcels = Parcel.find(filter);
 
