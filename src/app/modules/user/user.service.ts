@@ -51,7 +51,7 @@ const getMe = async (req: Request) => {
   const { id, role } = jwt.verify(token, secret) as JwtPayload;
   let user;
   if (role == "admin") {
-    user = await Admin.findOne({ userId: id });
+    user = await Admin.findOne({ userId: id }).populate("userId", "-password");
   } else {
     user = await Sender.findOne({ userId: id }).populate("userId", "-password");
   }
