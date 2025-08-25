@@ -6,6 +6,7 @@ import { IRole, IUserStatus } from "./user.interface";
 import { AppError } from "../../utils/appError";
 import { Sender } from "../sender/sender.model";
 import mongoose from "mongoose";
+import { Admin } from "../admin/admin.model";
 
 const register = async (req: Request) => {
   const session = await mongoose.startSession();
@@ -48,7 +49,13 @@ const getMe = async (req: Request) => {
   const token = req.cookies.token as string;
   const secret = process.env.JWT_SECRET as string;
   const { id, role } = jwt.verify(token, secret) as JwtPayload;
-  const user = await User.findById(id).select("-password");
+  let user;
+  if (role == "admin") {
+    user = await Admin.findOne({ userId: id });
+  } else {
+    user = await Sender.findOne({ userId: id }).populate("userId", "-password");
+  }
+
   return user;
 };
 
