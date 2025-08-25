@@ -14,15 +14,34 @@ const createParcel = async (req: Request) => {
   const secret = process.env.JWT_SECRET as string;
   const { id } = jwt.verify(token, secret) as JwtPayload;
 
-  const sender = await Sender.findOne({ userId: id });
+  let sender;
+
+  sender = await Sender.findOne({ userId: id });
 
   if (sender?.status == (IUserStatus.blocked || IUserStatus.deleted)) {
     throw new AppError(403, "User is not authorized");
   }
 
-  if (!sender) {
+  if (!id && !sender) {
     throw new AppError(404, "Sender not found");
   }
+
+  if (id && !sender) {
+    sender = await Sender.create({
+      firstName: "admin",
+      userId: id,
+      phoneNumber: "+8801680051016",
+      role: "admin",
+      status: "active",
+      address: {
+        street: "park avenue",
+        city: "Dhaka",
+        zipCode: "1216",
+        country: "Bangladesh",
+      },
+    });
+  }
+
   let receiver;
 
   receiver = await Reciever.findOneAndUpdate(
@@ -39,7 +58,7 @@ const createParcel = async (req: Request) => {
 
   const parcel = await Parcel.create({
     ...req.body,
-    sender: sender._id,
+    sender: sender?._id,
     receiver: receiver._id,
     status: IParcelStatus.pending,
     trackingHistory: [{ status: IParcelStatus.pending }],
