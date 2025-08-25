@@ -25,7 +25,7 @@ export class QueryBuilder {
 
   pagination() {
     const page = this.query.page || 1;
-    const limit = this.query.limit || 10;
+    const limit = this.query.limit || 100;
     const skip = (page - 1) * limit;
 
     this.modelQuery = this.modelQuery.skip(skip).limit(limit);
