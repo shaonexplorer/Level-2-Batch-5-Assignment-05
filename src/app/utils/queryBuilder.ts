@@ -19,7 +19,7 @@ export class QueryBuilder {
 
   sort() {
     const sort = this.query.sort || "-createdAt";
-    this.modelQuery = this.modelQuery.sort(this.query.sort);
+    this.modelQuery = this.modelQuery.sort(sort);
     return this;
   }
 
