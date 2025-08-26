@@ -41,7 +41,8 @@ const register = async (req: Request) => {
 };
 
 const getUsers = async () => {
-  const users = await User.find().select("-password");
+  const users = await Sender.find().populate("userId", "-password");
+
   return users;
 };
 
