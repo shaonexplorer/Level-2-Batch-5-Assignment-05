@@ -84,7 +84,10 @@ const updateParcel = async (req: Request) => {
 const updateParcelStatus = async (req: Request) => {
   const parcel = Parcel.findByIdAndUpdate(
     req.params.id,
-    { ...req.body, $push: { trackingHistory: { status: req.body.status } } },
+    {
+      ...req.body,
+      $addToSet: { trackingHistory: { status: req.body.status } },
+    },
     { new: true, runValidators: true }
   );
 
