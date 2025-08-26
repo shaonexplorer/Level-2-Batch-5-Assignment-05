@@ -61,7 +61,7 @@ const getMe = async (req: Request) => {
 };
 
 const getUserById = async (req: Request) => {
-  const token = req.headers.authorization as string;
+  const token = req.headers.authorization || (req.cookies.token as string);
   const secret = process.env.JWT_SECRET as string;
   const { id, role } = jwt.verify(token, secret) as JwtPayload;
 
@@ -81,7 +81,7 @@ const getUserById = async (req: Request) => {
 };
 
 const updateUserById = async (req: Request) => {
-  const token = req.headers.authorization as string;
+  const token = req.headers.authorization || (req.cookies.token as string);
   const secret = process.env.JWT_SECRET as string;
   const { id, role } = jwt.verify(token, secret) as JwtPayload;
 
@@ -109,7 +109,7 @@ const updateUserById = async (req: Request) => {
 };
 
 const deleteUserById = async (req: Request) => {
-  const token = req.headers.authorization as string;
+  const token = req.headers.authorization || (req.cookies.token as string);
   const secret = process.env.JWT_SECRET as string;
   const { role } = jwt.verify(token, secret) as JwtPayload;
 
