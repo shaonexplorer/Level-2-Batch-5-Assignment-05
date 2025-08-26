@@ -41,7 +41,9 @@ const register = async (req: Request) => {
 };
 
 const getUsers = async () => {
-  const users = await Sender.find().populate("userId", "-password");
+  const users = await Sender.find()
+    .populate("userId", "-password")
+    .sort("-createdAt");
 
   return users;
 };
