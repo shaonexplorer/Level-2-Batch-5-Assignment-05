@@ -82,6 +82,7 @@ const updateParcel = async (req: Request) => {
 };
 
 const updateParcelStatus = async (req: Request) => {
+  // handle functionality for advanced update
   const parcel = Parcel.findByIdAndUpdate(
     req.params.id,
     {
