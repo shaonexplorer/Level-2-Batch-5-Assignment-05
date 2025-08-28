@@ -12,7 +12,7 @@ const recieverSchema = new Schema<IReciever>(
       type: String,
       enum: Object.values(IRole),
       required: true,
-      default: IRole.sender,
+      default: IRole.reciever,
     },
     address: addressSchema,
     status: {
